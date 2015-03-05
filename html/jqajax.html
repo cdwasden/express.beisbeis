@@ -1,0 +1,82 @@
+<html>
+<head>
+	<title>City Finder</title>
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+
+<body>
+
+<form>
+Enter a Utah City: <input type="text" id="cityfield" value=""></br>
+Suggestion: <span id="txtHint"> Empty</span>
+<input id='button' type='submit' value='Submit'>
+</form>
+
+<p>City</p>
+<textarea id="dispcity">No City</textarea>
+<div id="weather">No Weather</div>
+
+<script>
+	
+	$('#button').click(function(e) {
+		$('#dispcity').text($('#cityfield').val());
+		e.preventDefault();
+		var myurl = 'https://api.wunderground.com/api/facba9d02d186bbb/geolookup/conditions/q/UT/';
+		myurl += $('#cityfield').val();
+		myurl += '.json';
+		// Then get the AJAX call and fill in the div.
+		$.ajax({
+			url: myurl,
+			dataType: "jsonp",
+			success: function(data) {
+				console.log(data);
+			// Grabbing the city first.
+			var location = data['location']['city'];
+			var temp_string = data['current_observation']['temperature_string'];
+			var current_weather = data['current_observation']['weather'];
+			var everything = "<ul>";
+			everything += "<li>Location: " + location + "</location>";
+			everything += "<li>Temperature: " + temp_string + "</li>";
+			everything += "<li>Weather: " + current_weather + "</li>";
+			everything += "</ul>";
+			$('#weather').html(everything);
+			},
+			error: function() {
+				var everything = "<p>Whoops! Looks like there are an error of some sort. Please check the name of the city and try again.</p>";
+			$('#weather').html(everything);
+			}
+		});
+	});
+
+	$('#cityfield').keyup(function() {
+		var url = "http://52.10.181.89/getcity?q=";
+		url += $('#cityfield').val();
+
+		$.getJSON(url, function(data) {
+			var everything;
+			everything = "<ul>";
+			$.each(data, function(i, item) {
+				everything += "<li> " + data[i].city + "</li>";
+			});
+			everything += "</ul>";
+			$('#txtHint').html(everything);
+		})
+
+		.done(function() {console.log("request success");})
+		.fail(function(jqXHR, textStatus, errorThrown) {
+			//console.log("Failed " + textStatus);
+			//console.log("Incoming " + jqXHR.responseText);
+		 })
+		.always(function() {
+			//console.log("always");
+		})
+		.complete(function() {
+			//console.log("complete");
+		})
+
+		//$('#txtHint').text($('#cityfield').val());
+		});
+</script>
+
+</body>
+</html>
