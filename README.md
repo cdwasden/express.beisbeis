@@ -1,3 +1,2 @@
-# comments.beisbeis
-CS360 project for Nodejs, Mongodb and JQuery.
-# comments.beisbeis
+# express.beisbeis
+CS360 Application demonstrating REST services with Express.
