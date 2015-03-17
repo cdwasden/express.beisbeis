@@ -49,10 +49,13 @@ Suggestion: <span id="txtHint"> Empty</span>
 	});
 
 	$('#cityfield').keyup(function() {
+		console.log("In cityfield keyup");
 		var url = "http://52.10.181.89/getcity?q=";
 		url += $('#cityfield').val();
 
 		$.getJSON(url, function(data) {
+			console.log("In jqajax");
+			console.log(data);
 			var everything;
 			everything = "<ul>";
 			$.each(data, function(i, item) {
